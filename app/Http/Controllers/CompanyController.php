@@ -65,7 +65,7 @@ class CompanyController extends Controller
 
     public function delete($id): RedirectResponse
     {
-        $company = Company::find($id);
+        $company = Company::findOrFail($id);
         if ($company->logo) {
             Storage::disk('public')->delete($company->logo);
         }
