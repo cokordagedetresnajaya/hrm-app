@@ -15376,4 +15376,17 @@ html.maximized-card {
   width: 32px;
 }
 
+.sm-round-logo{
+  width: 100%;
+  max-width: 80px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
 /*# sourceMappingURL=adminlte.css.map */

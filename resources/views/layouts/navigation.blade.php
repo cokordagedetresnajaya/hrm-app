@@ -1,12 +1,16 @@
 <!--begin::Sidebar Menu-->
 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-    <li class="nav-header">SELECT COMPANY</li>
+    <li class="nav-header">ACTIVE COMPANY</li>
     <li class="nav-header">
-        <select name="" id="" class="form-control">
-            @foreach(auth()->user()->companies as $company)
-                <option value="{{ $company->id }}">{{ $company->name }}</option>
-            @endforeach
-        </select>
+        <form id="switchCompanyForm" method="POST" action="{{ route('companies.switch') }}">
+            @csrf
+            <select name="company_id" id="" class="form-control" onchange="document.getElementById('switchCompanyForm').submit();">
+                <option value="">Select Company</option>
+                @foreach(auth()->user()->companies as $company)
+                    <option value="{{ $company->id }}" {{ session('company_id') == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
+                @endforeach
+            </select>
+        </form>
     </li>
     <li class="nav-item">
         <hr class="dropdown-divider my-1">

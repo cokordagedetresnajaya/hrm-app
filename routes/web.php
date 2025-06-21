@@ -7,6 +7,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,13 +15,17 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::prefix('companies')->name('companies.')->group(function () {
+        Route::get('/', [CompanyController::class, 'index'])->name('index');
+        Route::get('/create', [CompanyController::class, 'create'])->name('create');
+        Route::post('/create', [CompanyController::class, 'store'])->name('store');
+        Route::post('/switch', [CompanyController::class, 'switch'])->name('switch');
+        Route::delete('/{id}/delete', [CompanyController::class, 'delete'])->where('id', '[0-9]+')->name('delete');
+        Route::get('/{id}/edit', [CompanyController::class, 'edit'])->where('id', '[0-9]+')->name('edit');
+        Route::patch('/{id}/edit', [CompanyController::class, 'update'])->where('id', '[0-9]+')->name('update');
+    });
     Route::middleware('company.context')->group(function () {
-        Route::prefix('companies')->name('companies.')->group(function () {
-            Route::get('/', [CompanyController::class, 'index'])->name('index');
-            Route::get('/create', [CompanyController::class, 'create'])->name('create');
-            Route::get('/{id}/edit', [CompanyController::class, 'edit'])->name('edit');
-        });
         Route::prefix('departments')->name('departments.')->group(function () {
             Route::get('/', [DepartmentController::class, 'index'])->name('index');
             Route::get('/create', [DepartmentController::class, 'create'])->name('create');
