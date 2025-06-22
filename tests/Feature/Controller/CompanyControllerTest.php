@@ -255,9 +255,8 @@ class CompanyControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->delete(route('companies.delete', 99999));
-
-        $response->assertRedirect(route('companies.index'));
-        $response->assertSessionHasNoErrors(); // or check for custom error handling
+        $response->assertStatus(404);
+        $response->assertSessionHasNoErrors();
     }
 
     public function test_delete_non_existent_company_returns_404()

@@ -3,6 +3,8 @@
 namespace Tests\Feature\Model;
 
 use App\Models\Company;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\User;
 use Database\Seeders\CompanySeeder;
 use Database\Seeders\DepartmentSeeder;
@@ -54,17 +56,16 @@ class CompanyModelTest extends TestCase
 
     public function testHasManyDesignations()
     {
-        $this->seed([CompanySeeder::class, DepartmentSeeder::class, DesignationSeeder::class]);
-
-        $company = Company::where("email", "samplecompany1@example.com")->first();
-        self::assertNotNull($company);
+        $company = Company::factory()->create();
+        $department = Department::factory()->create([
+            'company_id' => $company->id
+        ]);
+        $designations = Designation::factory()->count(4)->create([
+            'department_id' => $department->id
+        ]);
 
         $designations = $company->designations;
         self::assertCount(4, $designations);
-        self::assertEquals("Auditor", $designations[0]->name);
-        self::assertEquals("Accountant", $designations[1]->name);
-        self::assertEquals("Software Engineer", $designations[2]->name);
-        self::assertEquals("Project Manager", $designations[3]->name);
     }
 
     public function testGetLogoAttribute()

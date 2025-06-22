@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company;
 use Illuminate\Support\Facades\Request;
 
 if (!function_exists('isActiveRoute')) {
@@ -29,5 +30,12 @@ if (!function_exists('isMenuOpen')) {
         }
 
         return '';
+    }
+}
+
+if(!function_exists('getCompany')) {
+    function getCompany()
+    {
+        return Company::findOrFail(session('company_id'));
     }
 }

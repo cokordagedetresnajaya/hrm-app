@@ -29,7 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('departments')->name('departments.')->group(function () {
             Route::get('/', [DepartmentController::class, 'index'])->name('index');
             Route::get('/create', [DepartmentController::class, 'create'])->name('create');
+            Route::post('/create', [DepartmentController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [DepartmentController::class, 'edit'])->name('edit');
+            Route::patch('/{id}/edit', [DepartmentController::class, 'update'])->name('update');
+            Route::delete('/{id}/delete', [DepartmentController::class, 'delete'])->name('delete');
         });
         Route::prefix('designations')->name('designations.')->group(function () {
             Route::get('/', [DesignationController::class, 'index'])->name('index');

@@ -26,11 +26,13 @@
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg sidebar-mini bg-body-tertiary">
+
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <!--begin::Header-->
@@ -194,7 +196,9 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="btn btn-default btn-flat float-end">Sign out</a>
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); this.closest('form').submit();"
+                                        class="btn btn-default btn-flat float-end">Sign out</a>
                                 </form>
                             </li>
                             <!--end::Menu Footer-->
@@ -269,6 +273,8 @@
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @stack('scripts')
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
@@ -291,6 +297,27 @@
         });
     </script>
     <!--end::OverlayScrollbars Configure-->
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // other options: toast-bottom-left, etc.
+            "timeOut": "5000", // how long the toast shows (in ms)
+            "extendedTimeOut": "1000",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "showDuration": "300",
+            "hideDuration": "1000"
+        };
+
+        @if (session('success'))
+            toastr.success("{{ session('success') }}", "Success");
+        @endif
+
+        @if (session('error'))
+            toastr.error("{{ session('error') }}", "Failed");
+        @endif
+    </script>
     <!--end::Script-->
 </body>
 <!--end::Body-->

@@ -9,6 +9,7 @@ use App\Models\Company;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -33,7 +34,8 @@ class CompanyController extends Controller
         if (!empty($data['logo'])) {
             $data['logo'] = $data['logo']->store('companies', 'public');
         }
-        Company::create($data);
+        $company = Company::create($data);
+        $company->users()->attach(Auth::id());
         session()->flash('success', 'Company created successfully.');
         return redirect()->route('companies.index');
     }

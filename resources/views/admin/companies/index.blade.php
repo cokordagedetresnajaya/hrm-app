@@ -18,16 +18,6 @@
                 </div>
             </div>
             <!--end::Row-->
-            @if (session('success'))
-                <div class="row mt-2">
-                    <div class="col-sm-12">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
         <!--end::Container-->
     </div>
