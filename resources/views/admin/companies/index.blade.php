@@ -32,7 +32,7 @@
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table class="table responsive-stack">
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
@@ -44,22 +44,27 @@
                                 <tbody>
                                     @foreach ($companies as $key => $company)
                                         <tr class="align-middle">
-                                            <td>{{ $key + 1 }}</td>
-                                            <td class="d-flex align-items-center">
-                                                <img src="{{ $company->logo_url }}" alt="{{ $company->name }} Logo"
-                                                    class="sm-round-logo">
-                                                {{ $company->name }}
+                                            <td data-label="#">{{ $key + 1 }}</td>
+                                            <td class="image-text-cell" data-label="Company Name">
+                                                <div class="image-text-wrapper d-flex align-items-center">
+                                                    <img src="{{ $company->logo_url }}" alt="{{ $company->name }} Logo"
+                                                        class="sm-round-logo me-2">
+                                                    <span>{{ $company->name }}</span>
+                                                </div>
                                             </td>
-                                            <td>{{ $company->departments->flatMap->designations->flatMap->employees->count() }}
+                                            <td data-label="Number of Employees">
+                                                {{ $company->departments->flatMap->designations->flatMap->employees->count() }}
                                             </td>
-                                            <td>
+                                            <td data-label="Actions">
                                                 <a href="{{ route('companies.edit', $company->id) }}"
                                                     class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                                <form id="delete-form-{{ $company->id }}" class="d-inline-block" action="{{ route('companies.delete', $company->id) }}" method="post">
+                                                <form id="delete-form-{{ $company->id }}" class="d-inline-block"
+                                                    action="{{ route('companies.delete', $company->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger"><i
-                                                        class="bi bi-trash-fill" onclick="deleteConfirmation(event, {{ $company->id }})"></i></button>
+                                                            class="bi bi-trash-fill"
+                                                            onclick="deleteConfirmation(event, {{ $company->id }})"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -83,6 +88,6 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('js/helper.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/helper.js') }}"></script>
 @endpush

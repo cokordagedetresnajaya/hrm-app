@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [DesignationController::class, 'index'])->name('index');
             Route::get('/create', [DesignationController::class, 'create'])->name('create');
             Route::post('/create', [DesignationController::class, 'store'])->name('store');
+            Route::get('/by-department/{id}', [DesignationController::class, 'getByDepartment'])->where('id', '[0-9]+');
             Route::get('/{id}/edit', [DesignationController::class, 'edit'])->where('id', '[0-9]+')->name('edit');
             Route::patch('/{id}/edit', [DesignationController::class, 'update'])->where('id', '[0-9]+')->name('update');
             Route::delete('/{id}/delete', [DesignationController::class, 'delete'])->where('id', '[0-9]+')->name('delete');
@@ -45,7 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('employees')->name('employees.')->group(function () {
             Route::get('/', [EmployeeController::class, 'index'])->name('index');
             Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+            Route::post('/create', [EmployeeController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('edit');
+            Route::patch('/{id}/edit', [EmployeeController::class, 'update'])->name('update');
+            Route::delete('/{id}/delete', [EmployeeController::class, 'delete'])->name('delete');
         });
         Route::prefix('contracts')->name('contracts.')->group(function () {
             Route::get('/', [ContractController::class, 'index'])->name('index');

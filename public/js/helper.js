@@ -32,3 +32,46 @@ function deleteConfirmation(event, id) {
         }
     });
 }
+
+function setupDependentSelect(parentSelector, childSelector, fetchUrlTemplate, optionMapper = null, defaultOptionText = 'Select an option') {
+    const parentSelect = document.querySelector(parentSelector);
+    const childSelect = document.querySelector(childSelector);
+
+    if (!parentSelect || !childSelect) return;
+
+    parentSelect.addEventListener('change', function () {
+        const parentId = this.value;
+        childSelect.innerHTML = '<option value="">Loading...</option>';
+
+        if (parentId) {
+            const url = fetchUrlTemplate.replace(':id', parentId);
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    childSelect.innerHTML = `<option value="">${defaultOptionText}</option>`;
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        if (optionMapper && typeof optionMapper === 'function') {
+                            const mapped = optionMapper(item);
+                            option.value = mapped.value;
+                            option.textContent = mapped.text;
+                        } else {
+                            option.value = item.id;
+                            option.textContent = item.name;
+                        }
+                        childSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    childSelect.innerHTML = '<option value="">Failed to load options</option>';
+                });
+        } else {
+            childSelect.innerHTML = `<option value="">${defaultOptionText}</option>`;
+        }
+    });
+}

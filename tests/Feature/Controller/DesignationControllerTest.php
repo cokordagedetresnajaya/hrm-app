@@ -295,4 +295,32 @@ class DesignationControllerTest extends TestCase
         $response->assertRedirect(route('designations.index'));
         $response->assertSessionHas('success', 'Designation deleted successfully.');
     }
+
+    public function test_get_designations_based_on_department()
+    {
+        $user = User::factory()->create();
+        $company = Company::factory()->create();
+        $user->companies()->attach($company->id);
+
+        $department = Department::factory()->create([
+            'company_id' => $company->id
+        ]);
+
+        $designations = Designation::factory()->count(4)->create([
+            'department_id' => $department->id
+        ]);
+
+        $response = $this->actingAs($user)->withSession([
+            'company_id' => $company->id
+        ])->getJson("/designations/by-department/{$department->id}");
+
+        $response->assertStatus(200);
+
+        $response->assertJsonCount(4);
+
+        $response->assertJsonFragment([
+            'id' => $designations[0]->id,
+            'name' => $designations[0]->name,
+        ]);
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveDepartmentRequest;
-use App\Http\Requests\SaveDesignationRequest;
+use App\Http\Requests\CreateDesignationRequest;
+use App\Http\Requests\EditDesignationRequest;
 use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Http\RedirectResponse;
@@ -29,7 +29,7 @@ class DesignationController extends Controller
         return response()->view('admin.designations.create', compact('title', 'departments'));
     }
 
-    public function store(SaveDesignationRequest $request): RedirectResponse
+    public function store(CreateDesignationRequest $request): RedirectResponse
     {
         $data = $request->validated();
         Designation::create($data);
@@ -45,7 +45,7 @@ class DesignationController extends Controller
         return response()->view('admin.designations.edit', compact('title','designation','departments'));
     }
 
-    public function update(int $id, SaveDesignationRequest $request): RedirectResponse
+    public function update(int $id, EditDesignationRequest $request): RedirectResponse
     {
         $designation = Designation::findOrFail($id);
         $data = $request->validated();
@@ -60,5 +60,12 @@ class DesignationController extends Controller
         $designation->delete();
         session()->flash('success', 'Designation deleted successfully.');
         return redirect()->route('designations.index');
+    }
+
+    public function getByDepartment(int $id)
+    {
+        $designations = Designation::inCompany()->where('department_id', $id)
+            ->get(['id', 'name']);
+        return response()->json($designations);
     }
 }

@@ -61,7 +61,9 @@ class Employee extends Model
     {
         $start_date = $start_date ?? now();
         $end_date = $end_date ?? now();
-
-        return $this->contracts()->where("start_date", ">=", $start_date)->where("end_date", "<=", $end_date)->first();
+        return $this->contracts()->where(function($query) use ($start_date, $end_date){
+            $query->where('start_date', '<=', $end_date)
+            ->where('end_date', '>=', $start_date);
+        })->first();
     }
 }

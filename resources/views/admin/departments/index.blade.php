@@ -32,7 +32,7 @@
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table class="table responsive-stack">
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
@@ -45,20 +45,23 @@
                                 <tbody>
                                     @foreach ($departments as $key => $department)
                                         <tr class="align-middle">
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $department->name }}</td>
-                                            <td>{{ $department->designations->count() }}</td>
-                                            <td>{{ $department->designations->flatMap->employees->count() }}</td>
-                                            <td>
+                                            <td data-label="#">{{ $key + 1 }}</td>
+                                            <td data-label="Department Name">{{ $department->name }}</td>
+                                            <td data-label="Number of Designations">{{ $department->designations->count() }}
+                                            </td>
+                                            <td data-label="Number of Employees">
+                                                {{ $department->designations->flatMap->employees->count() }}</td>
+                                            <td data-label="Actions">
                                                 <a href="{{ route('departments.edit', $department->id) }}"
                                                     class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                                                 <form id="delete-form-{{ $department->id }}" class="d-inline-block"
-                                                    action="{{ route('departments.delete', $department->id) }}" method="post">
+                                                    action="{{ route('departments.delete', $department->id) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger"><i
-                                                            class="bi bi-trash-fill"
-                                                            onclick="deleteConfirmation(event, {{ $department->id }})"></i></button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="deleteConfirmation(event, {{ $department->id }})"><i
+                                                            class="bi bi-trash-fill"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

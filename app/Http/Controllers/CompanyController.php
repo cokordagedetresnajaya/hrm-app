@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateCompanyRequest;
-use App\Http\Requests\EditCompanyRequest;
+use App\Http\Requests\SaveCompanyRequest;
 use App\Http\Requests\SwitchCompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +27,7 @@ class CompanyController extends Controller
         return view('admin.companies.create', compact('title'));
     }
 
-    public function store(CreateCompanyRequest $request): RedirectResponse
+    public function store(SaveCompanyRequest $request): RedirectResponse
     {
         $data = $request->validated();
         if (!empty($data['logo'])) {
@@ -47,7 +46,7 @@ class CompanyController extends Controller
         return view('admin.companies.edit', compact('title', 'company'));
     }
 
-    public function update(int $id, EditCompanyRequest $request)
+    public function update(int $id, SaveCompanyRequest $request)
     {
         $company = Company::findOrFail($id);
 

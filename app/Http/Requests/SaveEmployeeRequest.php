@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SaveDepartmentRequest extends FormRequest
+class SaveEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,18 @@ class SaveDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255']
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'designation_id' => ['required', 'exists:designations,id']
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'designation_id' => 'designation',
         ];
     }
 }
