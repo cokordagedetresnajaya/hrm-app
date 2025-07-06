@@ -13,7 +13,7 @@ class DepartmentController extends Controller
     public function index(): Response
     {
         $title = 'Departments';
-        $departments = Department::query()->inCompany()->latest()->paginate(perPage: 10);
+        $departments = Department::query()->inCompany()->latest()->paginate(10);
         return response()->view('admin.departments.index', compact('title', 'departments'));
     }
 

@@ -17,7 +17,7 @@ class CompanyController extends Controller
     public function index(): Response
     {
         $title = 'Companies';
-        $companies = Company::latest()->paginate(perPage: 10);
+        $companies = Company::latest()->paginate(10);
         return response()->view('admin.companies.index', compact('title', 'companies'));
     }
 

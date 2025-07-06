@@ -9,6 +9,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contract extends Model
 {
+    protected $fillable = [
+        'employee_id',
+        'designation_id',
+        'start_date',
+        'end_date',
+        'rate',
+        'rate_type'
+    ];
+
+    protected $appends = ["duration"];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date'
+    ];
+    
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, "employee_id", "id");
@@ -28,7 +44,7 @@ class Contract extends Model
 
     public function getDurationAttribute()
     {
-        return Carbon::parse($this->start_date->diffForHumans($this->end_date));
+        return Carbon::parse($this->start_date)->diffForHumans($this->end_date);
     }
 
     public function scopeSearchByEmployee(Builder $builder, $name): void

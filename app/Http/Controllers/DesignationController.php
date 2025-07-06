@@ -17,7 +17,7 @@ class DesignationController extends Controller
         $title = 'Designations';
         $designations = Designation::inCompany()->orderBy('department_id')
             ->latest()
-            ->paginate(perPage: 10);
+            ->paginate(10);
 
         return response()->view('admin.designations.index', compact('title', 'designations'));
     }
