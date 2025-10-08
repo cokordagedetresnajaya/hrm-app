@@ -20,7 +20,9 @@ class EmployeeFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
-            'address' => $this->faker->address
+            'address' => $this->faker->address,
+            'marital_status' => $this->faker->randomElement(['single', 'married', 'divorced', 'widowed']),
+            'dependents_count' => $this->faker->numberBetween(0, 3),
         ];
     }
 }

@@ -17,7 +17,7 @@ class CompanyController extends Controller
     public function index(): Response
     {
         $title = 'Companies';
-        $companies = Company::latest()->paginate(10);
+        $companies = Company::forUser()->latest()->paginate(10);
         return response()->view('admin.companies.index', compact('title', 'companies'));
     }
 
@@ -41,8 +41,11 @@ class CompanyController extends Controller
 
     public function edit(int $id): View
     {
-        $title = 'Edit Company';
         $company = Company::findOrFail($id);
+        if (!auth()->user()->hasCompany($company->id)) {
+            abort(403, "You cannot edit this company");
+        }
+        $title = 'Edit Company';
         return view('admin.companies.edit', compact('title', 'company'));
     }
 

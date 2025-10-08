@@ -27,7 +27,9 @@ class EmployeesSeeder extends Seeder
                             "name" => $faker->name(),
                             "email" => $faker->unique()->safeEmail(),
                             "phone" => $faker->phoneNumber,
-                            "address" => $faker->address
+                            "address" => $faker->address,
+                            "marital_status" => $faker->randomElement(['single', 'married', 'divorced', 'widowed']),
+                            "dependents_count" => $faker->numberBetween(0, 3),
                         ]);
                     }
                 }

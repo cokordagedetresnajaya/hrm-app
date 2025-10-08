@@ -40,6 +40,9 @@ class DesignationController extends Controller
     public function edit(int $id): Response
     {
         $designation = Designation::findOrFail($id);
+        if (!auth()->user()->hasCompany($designation->department->company_id)) {
+            abort(403, "You cannot edit this designation");
+        }
         $title = 'Edit Designation';
         $departments = Department::inCompany()->get();
         return response()->view('admin.designations.edit', compact('title','designation','departments'));

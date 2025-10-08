@@ -81,7 +81,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'johndoe@example.com',
             'phone' => '1234567890',
             'address' => 'Sample Address',
-            'designation_id' => $designation->id
+            'designation_id' => $designation->id,
+            'marital_status' => 'single',
+            'dependents_count' => 0
         ]);
 
         $this->assertDatabaseHas('employees', [
@@ -89,7 +91,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'johndoe@example.com',
             'phone' => '1234567890',
             'address' => 'Sample Address',
-            'designation_id' => $designation->id
+            'designation_id' => $designation->id,
+            'marital_status' => 'single',
+            'dependents_count' => 0
         ]);
 
         $response->assertRedirect(route('employees.index'));
@@ -117,7 +121,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'johndoe',
             'phone' => '1234567890',
             'address' => 'Sample Address',
-            'designation_id' => 9999
+            'designation_id' => 9999,
+            'marital_status' => 'single',
+            'dependents_count' => 0
         ]);
 
         $response->assertSessionHasErrors(['email','designation_id']);
@@ -191,7 +197,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'sample@example.com',
             'phone' => '0123456789',
             'address' => 'Sample Address',
-            'designation_id' => $designation2->id
+            'designation_id' => $designation2->id,
+            'marital_status' => 'married',
+            'dependents_count' => 0
         ]);
 
         $response->assertRedirect(route('employees.index'));
@@ -201,7 +209,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'sample@example.com',
             'phone' => '0123456789',
             'address' => 'Sample Address',
-            'designation_id' => $designation2->id
+            'designation_id' => $designation2->id,
+            'marital_status' => 'married',
+            'dependents_count' => 0
         ]);
     }
 
@@ -236,7 +246,9 @@ class EmployeeControllerTest extends TestCase
             'email' => 'johndoe',
             'phone' => '1234567890',
             'address' => 'Sample Address',
-            'designation_id' => 9999
+            'designation_id' => 9999,
+            'marital_status' => 'single',
+            'dependents_count' => 0
         ]);
 
         $response->assertSessionHasErrors(['email','designation_id']);

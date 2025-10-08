@@ -19,7 +19,7 @@ class ContractsSeeder extends Seeder
                 'rate_type' => 'monthly',
                 'start_date' => now(),
                 'end_date' => now()->addYear(),
-                'rate' => 50000
+                'rate' => 12000000
             ]);
         }
     }

@@ -4,10 +4,12 @@
     <li class="nav-header">
         <form id="switchCompanyForm" method="POST" action="{{ route('companies.switch') }}">
             @csrf
-            <select name="company_id" id="" class="form-control" onchange="document.getElementById('switchCompanyForm').submit();">
+            <select name="company_id" id="" class="form-control"
+                onchange="document.getElementById('switchCompanyForm').submit();">
                 <option value="">Select Company</option>
-                @foreach(auth()->user()->companies as $company)
-                    <option value="{{ $company->id }}" {{ session('company_id') == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
+                @foreach (auth()->user()->companies as $company)
+                    <option value="{{ $company->id }}" {{ session('company_id') == $company->id ? 'selected' : '' }}>
+                        {{ $company->name }}</option>
                 @endforeach
             </select>
         </form>
@@ -44,123 +46,128 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item {{ isMenuOpen(['departments.*']) }}">
-        <a href="#" class="nav-link {{ isActiveRoute('departments.*') }}">
-            <i class="nav-icon bi bi-diagram-3"></i>
-            <p>
-                Departments
-                <i class="nav-arrow bi bi-chevron-right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('departments.create') }}"
-                    class="nav-link {{ isActiveRoute('departments.create') }}">
-                    <i class="nav-icon bi bi-plus-square"></i>
-                    <p>Create Department</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('departments.index') }}" class="nav-link {{ isActiveRoute('departments.index') }}">
-                    <i class="nav-icon bi bi-list-ul"></i>
-                    <p>Departments List</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-item {{ isMenuOpen(['designations.*']) }}">
-        <a href="#" class="nav-link {{ isActiveRoute('designations.*') }}">
-            <i class="nav-icon bi bi-briefcase"></i>
-            <p>
-                Designations
-                <i class="nav-arrow bi bi-chevron-right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('designations.create') }}"
-                    class="nav-link {{ isActiveRoute('designations.create') }}">
-                    <i class="nav-icon bi bi-plus-square"></i>
-                    <p>Create Designation</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('designations.index') }}"
-                    class="nav-link {{ isActiveRoute('designations.index') }}">
-                    <i class="nav-icon bi bi-list-ul"></i>
-                    <p>Designations List</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-item {{ isMenuOpen(['employees.*']) }}">
-        <a href="#" class="nav-link {{ isActiveRoute('employees.*') }}">
-            <i class="nav-icon bi bi-people"></i>
-            <p>
-                Employees
-                <i class="nav-arrow bi bi-chevron-right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('employees.create') }}" class="nav-link {{ isActiveRoute('employees.create') }}">
-                    <i class="nav-icon bi bi-plus-square"></i>
-                    <p>Create Employee</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('employees.index') }}" class="nav-link {{ isActiveRoute('employees.index') }}">
-                    <i class="nav-icon bi bi-list-ul"></i>
-                    <p>Employees List</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-item {{ isMenuOpen(['contracts.*']) }}">
-        <a href="#" class="nav-link {{ isActiveRoute('contracts.*') }}">
-            <i class="nav-icon bi bi-file-text"></i>
-            <p>
-                Contracts
-                <i class="nav-arrow bi bi-chevron-right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('contracts.create') }}" class="nav-link {{ isActiveRoute('contracts.create') }}">
-                    <i class="nav-icon bi bi-plus-square"></i>
-                    <p>Create Contract</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('contracts.index') }}" class="nav-link {{ isActiveRoute('contracts.index') }}">
-                    <i class="nav-icon bi bi-list-ul"></i>
-                    <p>Contracts List</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li class="nav-item">
-        <a href="#" class="nav-link">
-            <i class="nav-icon bi bi-calculator"></i>
-            <p>
-                Accounting
-                <i class="nav-arrow bi bi-chevron-right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('payrolls.index') }}" class="nav-link">
-                    <i class="nav-icon bi bi-cash"></i>
-                    <p>Payrolls</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../widgets/info-box.html" class="nav-link">
-                    <i class="nav-icon bi bi-receipt"></i>
-                    <p>Payroll Payments</p>
-                </a>
-            </li>
-        </ul>
-    </li>
+    @if (session()->has('company_id'))
+        <li class="nav-item {{ isMenuOpen(['departments.*']) }}">
+            <a href="#" class="nav-link {{ isActiveRoute('departments.*') }}">
+                <i class="nav-icon bi bi-diagram-3"></i>
+                <p>
+                    Departments
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('departments.create') }}"
+                        class="nav-link {{ isActiveRoute('departments.create') }}">
+                        <i class="nav-icon bi bi-plus-square"></i>
+                        <p>Create Department</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('departments.index') }}"
+                        class="nav-link {{ isActiveRoute('departments.index') }}">
+                        <i class="nav-icon bi bi-list-ul"></i>
+                        <p>Departments List</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item {{ isMenuOpen(['designations.*']) }}">
+            <a href="#" class="nav-link {{ isActiveRoute('designations.*') }}">
+                <i class="nav-icon bi bi-briefcase"></i>
+                <p>
+                    Designations
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('designations.create') }}"
+                        class="nav-link {{ isActiveRoute('designations.create') }}">
+                        <i class="nav-icon bi bi-plus-square"></i>
+                        <p>Create Designation</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('designations.index') }}"
+                        class="nav-link {{ isActiveRoute('designations.index') }}">
+                        <i class="nav-icon bi bi-list-ul"></i>
+                        <p>Designations List</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item {{ isMenuOpen(['employees.*']) }}">
+            <a href="#" class="nav-link {{ isActiveRoute('employees.*') }}">
+                <i class="nav-icon bi bi-people"></i>
+                <p>
+                    Employees
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('employees.create') }}"
+                        class="nav-link {{ isActiveRoute('employees.create') }}">
+                        <i class="nav-icon bi bi-plus-square"></i>
+                        <p>Create Employee</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('employees.index') }}" class="nav-link {{ isActiveRoute('employees.index') }}">
+                        <i class="nav-icon bi bi-list-ul"></i>
+                        <p>Employees List</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item {{ isMenuOpen(['contracts.*']) }}">
+            <a href="#" class="nav-link {{ isActiveRoute('contracts.*') }}">
+                <i class="nav-icon bi bi-file-text"></i>
+                <p>
+                    Contracts
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('contracts.create') }}"
+                        class="nav-link {{ isActiveRoute('contracts.create') }}">
+                        <i class="nav-icon bi bi-plus-square"></i>
+                        <p>Create Contract</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('contracts.index') }}" class="nav-link {{ isActiveRoute('contracts.index') }}">
+                        <i class="nav-icon bi bi-list-ul"></i>
+                        <p>Contracts List</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-calculator"></i>
+                <p>
+                    Accounting
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('payrolls.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-cash"></i>
+                        <p>Payrolls</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('payments.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-receipt"></i>
+                        <p>Payroll Payments</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif
 </ul>
 <!--end::Sidebar Menu-->

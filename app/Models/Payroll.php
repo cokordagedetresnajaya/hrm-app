@@ -27,7 +27,7 @@ class Payroll extends Model
 
     public function scopeInCompany(Builder $builder): void
     {
-        $builder->where("company_id", $this->company_id);
+        $builder->where("company_id", session('company_id'));
     }
 
     public function getMonthYearAttribute(): string

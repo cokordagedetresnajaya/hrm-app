@@ -26,7 +26,9 @@ class SaveEmployeeRequest extends FormRequest
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
-            'designation_id' => ['required', 'exists:designations,id']
+            'designation_id' => ['required', 'exists:designations,id'],
+            'marital_status' => ['required', 'in:single,married,divorced,widowed'],
+            'dependents_count' => ['required', 'integer', 'min:0'],
         ];
     }
 
@@ -34,6 +36,8 @@ class SaveEmployeeRequest extends FormRequest
     {
         return [
             'designation_id' => 'designation',
+            'marital_status' => 'marital status',
+            'dependents_count' => 'total dependents'
         ];
     }
 }

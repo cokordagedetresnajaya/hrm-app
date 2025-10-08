@@ -17,7 +17,9 @@ class Employee extends Model
         "email",
         "phone",
         "address",
-        "designation_id"
+        "designation_id",
+        "marital_status",
+        "dependents_count"
     ];
 
     public function designation(): BelongsTo

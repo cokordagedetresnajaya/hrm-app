@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GeneratePayrollRequest;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\Salary;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class PayrollController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $title = 'Payrolls List';
-        $payrolls = Payroll::inCompany()->orderBy('year','desc')->orderBy('month','desc')->paginate(perPage: 10);
+        $payrolls = Payroll::inCompany()->orderBy('year','desc')->orderBy('month','desc')->paginate(10);
         return response()->view('admin.payrolls.index', compact('title','payrolls'));
     }
 
@@ -24,7 +28,7 @@ class PayrollController extends Controller
         $date = Carbon::parse($data['monthYear']);
 
         $isPayrollExists = Payroll::inCompany()->where('month', $date->format('m'))->where('year', $date->format('Y'))->exists();
-
+        
         if ($isPayrollExists) {
             throw ValidationException::withMessages(['monthYear' => 'Payroll already generated for this month.']);
         } else {
@@ -46,7 +50,15 @@ class PayrollController extends Controller
                 }
             }
             session()->flash('success', 'Payroll generated successfully.');
+            return redirect()->route('payrolls.index');
         }
+    }
+
+    public function show(int $id): Response
+    {
+        $title = "Payroll Breakdown";
+        $payroll = Payroll::inCompany()->findOrFail($id);
+        return response()->view('admin.payrolls.show', compact('title', 'payroll'));
     }
 
     public function updatePayroll(int $id)
@@ -64,5 +76,15 @@ class PayrollController extends Controller
             }
         }
         session()->flash('success', 'Payroll updated successfully.');
+    }
+
+    public function generatePayslip(int $id)
+    {
+        $salary = Salary::find($id);
+        $pdf = Pdf::loadView('pdf.payslip', compact('salary'));
+        $pdf->setPaper('A4', 'portrait');
+        $filepath = storage_path(Str::slug($salary->employee->name) . '-payslip.pdf');
+        $pdf->save($filepath);
+        return response()->download($filepath)->deleteFileAfterSend(true);
     }
 }

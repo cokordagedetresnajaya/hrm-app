@@ -38,6 +38,10 @@ class EmployeeController extends Controller
     {
         $title = 'Edit Employee';
         $employee = Employee::findOrFail($id);
+        if(!auth()->user()->hasCompany($employee->designation->department->company_id))
+        {
+            abort(403, "You cannot edit this employee");
+        }
         $departments = Department::inCompany()->get();
         $designations = Designation::where('department_id', $employee->designation->department_id)->get();
         return response()->view('admin.employees.edit', compact('title', 'employee', 'departments', 'designations'));

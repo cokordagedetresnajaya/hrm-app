@@ -58,6 +58,9 @@ class ContractController extends Controller
     public function edit(int $id): Response
     {
         $contract = Contract::findOrFail($id);
+        if (!auth()->user()->hasCompany($contract->designation->department->company_id)) {
+            abort(403, "You cannot edit this contract");
+        }
         $title = 'Edit Contract';
         $departments = Department::inCompany()->get();
         $designations = Designation::inCompany()->where('department_id', $contract->designation->department_id)->get();

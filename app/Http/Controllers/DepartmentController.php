@@ -40,6 +40,9 @@ class DepartmentController extends Controller
     {
         $title = 'Edit Department';
         $department = Department::findOrFail($id);
+        if (!auth()->user()->hasCompany($department->company_id)) {
+            abort(403, "You cannot edit this department");
+        }
         return response()->view('admin.departments.edit', compact('title','department'));
     }
 

@@ -5,8 +5,10 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +64,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
         Route::prefix('payrolls')->name('payrolls.')->group(function () {
             Route::get('/', [PayrollController::class, 'index'])->name('index');
+            Route::post('/', [PayrollController::class, 'generatePayroll'])->name('generate');
             Route::get('/{id}/show', [PayrollController::class, 'show'])->name('show');
+            Route::post('/{id}/show', [PayrollController::class, 'generatePayslip'])->name('generate_payslip');
+        });
+        Route::prefix('payments')->name('payments.')->group(function() {
+            Route::get('/', [PaymentController::class, 'index'])->name('index');
+            Route::get('/create', [PaymentController::class, 'create'])->name('create');
+            Route::post('/create', [PaymentController::class, 'store'])->name('store');
+            Route::get('/{id}/show', [PaymentController::class, 'show'])->name('show');
+            Route::delete('/{id}/delete', [PaymentController::class, 'delete'])->name('delete');
+        });
+        Route::prefix('salaries')->name('salaries.')->group(function() {
+            Route::post('/net-salary', [SalaryController::class, 'getNetSalary'])->name('get-net');
         });
     });
 });

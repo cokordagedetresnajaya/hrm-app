@@ -56,6 +56,47 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="maritalStatus" class="form-label">Marital Status</label>
+                                        <select name="marital_status"
+                                            class="form-select @error('marital_status') is-invalid @enderror"
+                                            id="maritalStatus">
+                                            <option value="">Select marital status</option>
+                                            <option value="single"
+                                                {{ $employee->marital_status === 'single' ? 'selected' : '' }}>Single</option>
+                                            <option value="married"
+                                                {{ $employee->marital_status === 'married' ? 'selected' : '' }}>Married</option>
+                                            <option value="divorced"
+                                                {{ $employee->marital_status === 'divorced' ? 'selected' : '' }}>Divorced
+                                            </option>
+                                            <option value="widowed"
+                                                {{ $employee->marital_status === 'widowed' ? 'selected' : '' }}>Widowed
+                                            </option>
+                                        </select>
+                                        @error('marital_status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="dependentsCount" class="form-label">Total Dependents</label>
+                                        <select name="dependents_count"
+                                            class="form-select @error('dependents_count') is-invalid @enderror"
+                                            id="dependentsCount">
+                                            <option value="">Select total dependents</option>
+                                            @for ($i = 0; $i <= 2; $i++)
+                                                <option value="{{ $i }}"
+                                                    {{ $employee->dependents_count == $i ? 'selected' : '' }}>
+                                                    {{ $i }} {{ $i == 0 ? '(No Dependents)' : '' }}
+                                                </option>
+                                            @endfor
+                                            <option value="3" {{ $employee->dependents_count == 3 ? 'selected' : '' }}>
+                                                3 or More
+                                            </option>
+                                        </select>
+                                        @error('dependents_count')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="department" class="form-label">Department</label>
                                         <select name="department_id"
                                             class="form-select @error('department_id') is-invalid @enderror"

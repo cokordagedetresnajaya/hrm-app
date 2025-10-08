@@ -51,4 +51,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Company::class, "company_user", "user_id", "company_id");
     }
+
+    public function hasCompany($id)
+    {
+        foreach ($this->companies()->get() as $company) {
+            if ($company->id == $id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
