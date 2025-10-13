@@ -22,7 +22,7 @@ class CreateDesignationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:designations'],
+            'name' => ['required', 'string', 'max:255'],
             'department_id' => ['required', 'exists:departments,id']
         ];
     }

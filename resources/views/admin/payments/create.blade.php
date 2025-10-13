@@ -151,9 +151,12 @@
             });
 
             $('#employee').on('change', function(){
+                alert(isEmployeeValid($(this).val()));
                 if ($('#payroll').val() !== '' && $(this).val() !== '' && isEmployeeValid($(this).val())) {
                     const [employeeId, employeeName] = $(this).val().split(/-(.+)/);
                     const payrollId = $('#payroll').val();
+
+                    alert('TEST');
 
                     getEmployeeSalary(payrollId, employeeId);
                 }
@@ -170,7 +173,7 @@
         });
 
         function isEmployeeValid(input){
-            const regex = /^\d+-[A-Za-z]+( [A-Za-z]+)*$/;
+            const regex = /^\d+-[A-Za-z0-9]+( [A-Za-z0-9]+)*$/;
             return regex.test(input);
         }
 
@@ -184,6 +187,7 @@
                     employee_id: employeeId
                 },
                 success: function(response) {
+                    console.log(response);
                     $('#amount').val(response.data);
                 }
             })

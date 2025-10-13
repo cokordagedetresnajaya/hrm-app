@@ -21,7 +21,7 @@ class Salary extends Model
 
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, "employee_id", "id");
+        return $this->belongsTo(Employee::class, "employee_id", "id")->withTrashed();
     }
 
     public function getBreakdownAttribute(): NetPayCalculationsService
@@ -37,5 +37,11 @@ class Salary extends Model
     public function getNetPayAttribute()
     {
         return $this->breakdown->calculateNetPay();
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'employee_id', 'employee_id')
+            ->whereColumn('payments.payroll_id', 'salaries.payroll_id');
     }
 }

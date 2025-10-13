@@ -18,6 +18,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::patch('/profile', [UserController::class, 'updateProfile'])->name('update_profile');
     Route::prefix('companies')->name('companies.')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('index');
         Route::get('/create', [CompanyController::class, 'create'])->name('create');

@@ -30,6 +30,13 @@ class Payroll extends Model
         $builder->where("company_id", session('company_id'));
     }
 
+    public function scopePending(Builder $builder): void
+    {
+        $builder->whereHas('salaries', function ($q) {
+            $q->whereDoesntHave('payment');
+        });
+    }
+
     public function getMonthYearAttribute(): string
     {
         return $this->year . "-" . $this->month;

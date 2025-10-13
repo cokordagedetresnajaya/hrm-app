@@ -72,7 +72,7 @@
                                                 </p>
                                             </td>
                                             <td data-label="Rate">
-                                                USD {{ number_format($contract->rate) }} {{ $contract->rate_type }}
+                                                IDR {{ number_format($contract->rate) }} {{ $contract->rate_type }}
                                             </td>
                                             <td data-label="Actions">
                                                 <a href="{{ route('contracts.edit', $contract->id) }}"

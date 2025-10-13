@@ -22,7 +22,7 @@ class SavePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employee' => ['required','regex:/^\d+-[a-zA-Z ]+$/'],
+            'employee' => ['required','regex:/^\d+-[A-Za-z0-9 ]+$/'],
             'payroll_id' => ['required'],
             'amount' => ['required','numeric'],
             'payment_date' => ['required','date_format:d/m/Y'],

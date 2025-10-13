@@ -91,7 +91,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="rate" class="form-label">Rate (USD)</label>
+                                        <label for="rate" class="form-label">Rate (IDR)</label>
                                         <input name="rate" type="number" id="rate"
                                             class="form-control @error('rate') is-invalid @enderror"
                                             value="{{ old('rate') }}">
