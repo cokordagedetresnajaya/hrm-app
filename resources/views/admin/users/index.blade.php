@@ -8,12 +8,12 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">{{ getCompany()->name . ' ' . $title }}</h3>
+                    <h3 class="mb-0">{{ $title }}</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ getCompany()->name . ' ' . $title }}</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                     </ol>
                 </div>
             </div>
@@ -36,43 +36,59 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center" style="width: 10px">#</th>
-                                        <th class="text-center">Employee Name</th>
-                                        <th class="text-center">Designation</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Role</th>
+                                        <th class="text-center">Companies</th>
                                         <th style="width: 140px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employees as $key => $employee)
+                                    @foreach ($users as $key => $user)
                                         <tr class="align-middle text-center">
                                             <td data-label="#">{{ $key + 1 }}</td>
-                                            <td data-label="Employee Name">
-                                                <p class="m-0">{{ $employee->name }}</p>
-                                                <small>{{ $employee->email }}</small>
+                                            <td data-label="Name">
+                                                {{ $user->name }}
                                             </td>
-                                            <td data-label="Designation">
-                                                <p class="m-0">{{ $employee->designation->name }}</p>
-                                                <small>{{ $employee->designation->department->name }}</small>
+                                            <td data-label="Email">
+                                                {{ $user->email }}
+                                            </td>
+                                            <td data-label="Role">
+                                                @php
+                                                $badgeColor = 'bg-danger';
+                                                if ($user->getRoleNames()[0] == 'HRD') {
+                                                    $badgeColor = "bg-warning";
+                                                } else if($user->getRoleNames()[0] == 'Accountant') {
+                                                    $badgeColor = "bg-primary";
+                                                }
+                                                @endphp
+                                                <span class="badge {{ $badgeColor }}">
+                                                    {{ $user->getRoleNames()[0] }}
+                                                </span>
+                                            </td>
+                                            <td data-label="Companies">
+                                                @foreach($user->companies as $company)
+                                                    <span class="badge bg-primary">{{ $company->name }}</span>
+                                                @endforeach
                                             </td>
                                             <td data-label="Actions">
-                                                <a href="{{ route('employees.edit', $employee->id) }}"
+                                                <a href="{{ route('users.edit', $user->id) }}"
                                                     class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                                @unlessrole('Accountant')
-                                                <form id="delete-form-{{ $employee->id }}" class="d-inline-block"
-                                                    action="{{ route('employees.delete', $employee->id) }}" method="post">
+                                                <form id="delete-form-{{ $user->id }}" class="d-inline-block"
+                                                    action="{{ route('users.delete', $user->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger"
-                                                        onclick="deleteConfirmation(event, {{ $employee->id }})"><i
+                                                        onclick="deleteConfirmation(event, {{ $user->id }})"><i
                                                             class="bi bi-trash-fill"></i></button>
                                                 </form>
-                                                @endunlessrole
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                             <div class="mt-4">
-                                {{ $employees->links() }}
+                                {{ $users->links() }}
                             </div>
                         </div>
                         <!-- /.card-body -->

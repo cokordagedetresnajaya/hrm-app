@@ -20,6 +20,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::patch('/profile', [UserController::class, 'updateProfile'])->name('update_profile');
+    Route::prefix('users')->name('users.')->middleware(['role:Admin'])->group(function() {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/create', [UserController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::patch('/{id}/edit', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [UserController::class, 'delete'])->name('delete');
+    });
     Route::prefix('companies')->name('companies.')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('index');
         Route::get('/create', [CompanyController::class, 'create'])->name('create');
@@ -30,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/{id}/edit', [CompanyController::class, 'update'])->where('id', '[0-9]+')->name('update');
     });
     Route::middleware('company.context')->group(function () {
-        Route::prefix('departments')->name('departments.')->group(function () {
+        Route::prefix('departments')->name('departments.')->middleware(['role:Admin|HRD'])->group(function () {
             Route::get('/', [DepartmentController::class, 'index'])->name('index');
             Route::get('/create', [DepartmentController::class, 'create'])->name('create');
             Route::post('/create', [DepartmentController::class, 'store'])->name('store');
@@ -38,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::patch('/{id}/edit', [DepartmentController::class, 'update'])->where('id', '[0-9]+')->name('update');
             Route::delete('/{id}/delete', [DepartmentController::class, 'delete'])->where('id', '[0-9]+')->name('delete');
         });
-        Route::prefix('designations')->name('designations.')->group(function () {
+        Route::prefix('designations')->name('designations.')->middleware(['role:Admin|HRD'])->group(function () {
             Route::get('/', [DesignationController::class, 'index'])->name('index');
             Route::get('/create', [DesignationController::class, 'create'])->name('create');
             Route::post('/create', [DesignationController::class, 'store'])->name('store');
@@ -50,13 +58,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('employees')->name('employees.')->group(function () {
             Route::get('/', [EmployeeController::class, 'index'])->name('index');
             Route::get('/get-employees-autocomplete', [EmployeeController::class, 'getEmployeesAutocomplete'])->name('getEmployeesAutocomplete');
-            Route::get('/create', [EmployeeController::class, 'create'])->name('create');
-            Route::post('/create', [EmployeeController::class, 'store'])->name('store');
+            Route::middleware(['role:Admin|HRD'])->group(function(){
+                Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+                Route::post('/create', [EmployeeController::class, 'store'])->name('store');
+                Route::delete('/{id}/delete', [EmployeeController::class, 'delete'])->name('delete');
+                Route::patch('/{id}/edit', [EmployeeController::class, 'update'])->name('update');
+            });
             Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('edit');
-            Route::patch('/{id}/edit', [EmployeeController::class, 'update'])->name('update');
-            Route::delete('/{id}/delete', [EmployeeController::class, 'delete'])->name('delete');
         });
-        Route::prefix('contracts')->name('contracts.')->group(function () {
+        Route::prefix('contracts')->name('contracts.')->middleware(['role:Admin|HRD'])->group(function () {
             Route::get('/', [ContractController::class, 'index'])->name('index');
             Route::get('/create', [ContractController::class, 'create'])->name('create');
             Route::post('/create', [ContractController::class, 'store'])->name('store');
@@ -64,13 +74,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::patch('/{id}/edit', [ContractController::class, 'update'])->name('update');
             Route::delete('/{id}/delete', [ContractController::class, 'delete'])->name('delete');
         });
-        Route::prefix('payrolls')->name('payrolls.')->group(function () {
+        Route::prefix('payrolls')->name('payrolls.')->middleware(['role:Admin|HRD'])->group(function () {
             Route::get('/', [PayrollController::class, 'index'])->name('index');
             Route::post('/', [PayrollController::class, 'generatePayroll'])->name('generate');
             Route::get('/{id}/show', [PayrollController::class, 'show'])->name('show');
             Route::post('/{id}/show', [PayrollController::class, 'generatePayslip'])->name('generate_payslip');
         });
-        Route::prefix('payments')->name('payments.')->group(function() {
+        Route::prefix('payments')->name('payments.')->middleware(['role:Admin|Accountant'])->group(function() {
             Route::get('/', [PaymentController::class, 'index'])->name('index');
             Route::get('/create', [PaymentController::class, 'create'])->name('create');
             Route::post('/create', [PaymentController::class, 'store'])->name('store');

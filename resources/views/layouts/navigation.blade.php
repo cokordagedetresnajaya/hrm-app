@@ -23,6 +23,7 @@
             <p>Dashboard</p>
         </a>
     </li>
+    @role('Admin')
     <li class="nav-item {{ isMenuOpen(['companies.*']) }}">
         <a href="#" class="nav-link {{ isActiveRoute('companies.*') }}">
             <i class="nav-icon bi bi-building"></i>
@@ -46,7 +47,9 @@
             </li>
         </ul>
     </li>
+    @endrole
     @if (session()->has('company_id'))
+        @role('Admin|HRD')
         <li class="nav-item {{ isMenuOpen(['departments.*']) }}">
             <a href="#" class="nav-link {{ isActiveRoute('departments.*') }}">
                 <i class="nav-icon bi bi-diagram-3"></i>
@@ -72,6 +75,8 @@
                 </li>
             </ul>
         </li>
+        @endrole
+        @role('Admin|HRD')
         <li class="nav-item {{ isMenuOpen(['designations.*']) }}">
             <a href="#" class="nav-link {{ isActiveRoute('designations.*') }}">
                 <i class="nav-icon bi bi-briefcase"></i>
@@ -97,6 +102,7 @@
                 </li>
             </ul>
         </li>
+        @endrole
         <li class="nav-item {{ isMenuOpen(['employees.*']) }}">
             <a href="#" class="nav-link {{ isActiveRoute('employees.*') }}">
                 <i class="nav-icon bi bi-people"></i>
@@ -106,6 +112,7 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
+                @role('Admin|HRD')
                 <li class="nav-item">
                     <a href="{{ route('employees.create') }}"
                         class="nav-link {{ isActiveRoute('employees.create') }}">
@@ -113,6 +120,7 @@
                         <p>Create Employee</p>
                     </a>
                 </li>
+                @endrole
                 <li class="nav-item">
                     <a href="{{ route('employees.index') }}" class="nav-link {{ isActiveRoute('employees.index') }}">
                         <i class="nav-icon bi bi-list-ul"></i>
@@ -121,6 +129,7 @@
                 </li>
             </ul>
         </li>
+        @role('Admin|HRD')
         <li class="nav-item {{ isMenuOpen(['contracts.*']) }}">
             <a href="#" class="nav-link {{ isActiveRoute('contracts.*') }}">
                 <i class="nav-icon bi bi-file-text"></i>
@@ -145,6 +154,7 @@
                 </li>
             </ul>
         </li>
+        @endrole
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon bi bi-calculator"></i>
@@ -154,20 +164,49 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
+                @role('Admin|HRD')
                 <li class="nav-item">
                     <a href="{{ route('payrolls.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-cash"></i>
                         <p>Payrolls</p>
                     </a>
                 </li>
+                @endrole
+                @role('Admin|Accountant')
                 <li class="nav-item">
                     <a href="{{ route('payments.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-receipt"></i>
                         <p>Payroll Payments</p>
                     </a>
                 </li>
+                @endrole
             </ul>
         </li>
     @endif
+    @role('Admin')
+    <li class="nav-item {{ isMenuOpen(['users.*']) }}">
+        <a href="#" class="nav-link {{ isActiveRoute('users.*') }}">
+            <i class="nav-icon bi bi-people-fill"></i>
+            <p>
+                Users
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('users.create') }}" class="nav-link {{ isActiveRoute('users.create') }}">
+                    <i class="nav-icon bi bi-plus-square"></i>
+                    <p>Create User</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link {{ isActiveRoute('users.index') }}">
+                    <i class="nav-icon bi bi-list-ul"></i>
+                    <p>Users List</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    @endrole
 </ul>
 <!--end::Sidebar Menu-->

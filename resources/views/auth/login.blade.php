@@ -81,7 +81,7 @@
                     <!--end::Row-->
                 </form>
                 <!-- /.social-auth-links -->
-                <p class="mt-4 mb-1"><a href="#">I forgot my password</a></p>
+                <p class="mt-4 mb-1"><a href="{{ route('password.email') }}">I forgot my password</a></p>
             </div>
             <!-- /.login-card-body -->
         </div>

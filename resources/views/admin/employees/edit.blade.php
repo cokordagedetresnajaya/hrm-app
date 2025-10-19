@@ -41,7 +41,7 @@
                                         <label for="name" class="form-label">Employee Name</label>
                                         <input name="name" type="text"
                                             class="form-control @error('name') is-invalid @enderror" id="name"
-                                            value="{{ $employee->name }}">
+                                            value="{{ $employee->name }}" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -50,7 +50,7 @@
                                         <label for="email" class="form-label">Employee Email</label>
                                         <input name="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
-                                            value="{{ $employee->email }}">
+                                            value="{{ $employee->email }}" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -59,7 +59,7 @@
                                         <label for="maritalStatus" class="form-label">Marital Status</label>
                                         <select name="marital_status"
                                             class="form-select @error('marital_status') is-invalid @enderror"
-                                            id="maritalStatus">
+                                            id="maritalStatus" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                             <option value="">Select marital status</option>
                                             <option value="single"
                                                 {{ $employee->marital_status === 'single' ? 'selected' : '' }}>Single</option>
@@ -80,7 +80,7 @@
                                         <label for="dependentsCount" class="form-label">Total Dependents</label>
                                         <select name="dependents_count"
                                             class="form-select @error('dependents_count') is-invalid @enderror"
-                                            id="dependentsCount">
+                                            id="dependentsCount" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                             <option value="">Select total dependents</option>
                                             @for ($i = 0; $i <= 2; $i++)
                                                 <option value="{{ $i }}"
@@ -100,7 +100,7 @@
                                         <label for="department" class="form-label">Department</label>
                                         <select name="department_id"
                                             class="form-select @error('department_id') is-invalid @enderror"
-                                            id="department">
+                                            id="department" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                             <option value="">Choose Department</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}"
@@ -116,7 +116,7 @@
                                         <label for="designation" class="form-label">Designation</label>
                                         <select name="designation_id"
                                             class="form-select @error('designation_id') is-invalid @enderror"
-                                            id="designation">
+                                            id="designation" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                             <option value="">Choose Designation</option>
                                             @foreach($designations as $designation)
                                             <option value="{{ $designation->id }}" {{ $employee->designation_id == $designation->id ? 'selected' : '' }}>{{ $designation->name }}</option>
@@ -130,7 +130,7 @@
                                         <label for="phone" class="form-label">Phone Number</label>
                                         <input name="phone" type="text"
                                             class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                            value="{{ $employee->phone }}">
+                                            value="{{ $employee->phone }}" @unlessrole('Admin')@unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                         @error('phone')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -139,7 +139,7 @@
                                         <label for="address" class="form-label">Address</label>
                                         <input name="address" type="text"
                                             class="form-control @error('address') is-invalid @enderror" id="address"
-                                            value="{{ $employee->address }}">
+                                            value="{{ $employee->address }}" @unlessrole('Admin') @unlessrole('HRD') disabled @endunlessrole @endunlessrole>
                                         @error('address')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -147,9 +147,11 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                            @unlessrole('Accountant')
                             <div class="card-footer d-flex justify-content-end">
                                 <button class="btn btn-primary">Save</button>
                             </div>
+                            @endunlessrole
                         </div>
                         <!-- /.card -->
                     </form>

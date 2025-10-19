@@ -2,6 +2,11 @@
     margin: 0 5px; /* left and right spacing between buttons */
 }
 
+.ts-wrapper.form-control.multi.plugin-remove_button {
+    padding: 0 !important;
+    background-color: green;
+}
+
 @media (max-width: 768px) {
     table.responsive-stack thead {
         display: none;

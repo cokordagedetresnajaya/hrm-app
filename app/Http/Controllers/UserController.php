@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Company;
 use App\Models\Contract;
 use App\Models\Department;
 use App\Models\Employee;
@@ -12,9 +13,100 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $title = "Users";
+        $users = User::paginate(10);
+        return response()->view('admin.users.index', compact('title','users'));
+    }
+
+    public function create()
+    {
+        $title = 'Create New User';
+        $companies = Company::all();
+        $roles = Role::all();
+        return response()->view('admin.users.create', compact('title','companies','roles'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'role' => ['required'],
+            'companies' => ['required','array'],
+            'companies.*' => ['integer', 'exists:companies,id'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->companies()->attach($validated['companies']);
+        $user->assignRole($validated['role']);
+
+        return redirect(route('users.index'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        $companies = Company::all();
+        $roles = Role::all();
+        $title = "Edit User";
+        $selectedCompanies = $user->companies->pluck('id')->toArray();
+        return response()->view('admin.users.edit', compact('title','user','companies','roles','selectedCompanies'));
+    }
+
+    public function update($id, Request $request)
+    {
+        $user = User::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'role' => ['required'],
+            'companies' => ['required','array'],
+            'companies.*' => ['integer', 'exists:companies,id'],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email']
+        ];
+
+        // Update password jika diisi
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($data);
+
+        // Update companies (pivot)
+        $user->companies()->sync($validated['companies']);
+
+        // Update role (Spatie)
+        $user->syncRoles([$validated['role']]);
+        session()->flash('success', 'User updated successfully.');
+
+        $companies = $user->companies->pluck('id')->toArray();
+        if ($user->id == Auth::user()->id && !in_array(session('company_id'), $companies)) {
+            session()->forget('company_id');
+            return redirect()->route('dashboard');
+        }
+        return redirect()->route('users.index');
+    }
+
     public function dashboard(): Response
     {
         $title = 'Dashboard';
@@ -136,5 +228,17 @@ class UserController extends Controller
         $user->update($data);
         session()->flash('success', 'Profile updated successfully.');
         return redirect()->route('profile');
+    }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->id == Auth::user()->id) {
+            session()->flash('error', 'You cannot delete yourself');
+            return redirect()->route('users.index');
+        }
+        $user->delete();
+        session()->flash('success', 'User deleted successfully.');
+        return redirect()->route('users.index');
     }
 }

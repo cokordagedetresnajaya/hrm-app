@@ -25,9 +25,9 @@
         integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous" />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     @stack('styles')
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -64,7 +64,7 @@
                                 <img src="{{ asset('images/user2-160x160.jpg') }}" class="rounded-circle shadow"
                                     alt="User Image" />
                                 <p>
-                                    {{ auth()->user()->name }}
+                                    {{ auth()->user()->name . ' - ' . auth()->user()->getRoleNames()[0] }}
                                 </p>
                             </li>
                             <!--end::User Image-->

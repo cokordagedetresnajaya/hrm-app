@@ -151,12 +151,9 @@
             });
 
             $('#employee').on('change', function(){
-                alert(isEmployeeValid($(this).val()));
                 if ($('#payroll').val() !== '' && $(this).val() !== '' && isEmployeeValid($(this).val())) {
                     const [employeeId, employeeName] = $(this).val().split(/-(.+)/);
                     const payrollId = $('#payroll').val();
-
-                    alert('TEST');
 
                     getEmployeeSalary(payrollId, employeeId);
                 }
