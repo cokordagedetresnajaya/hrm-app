@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>{{ config('app.name', 'HRM') }} | Login</title>
+    <title>{{ config('app.name', 'HRM') }} | Forgot Password</title>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="{{ config('app.name', 'HRM') }} | Login" />
@@ -29,6 +29,7 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -48,11 +49,9 @@
                         <input name="email" type="email" class="form-control" placeholder="Email" value="{{ old('email') }}" />
                         <div class="input-group-text"><span class="bi bi-envelope"></span></div>
                     </div>
-                    @if($errors->get('email'))
-                        @foreach($errors->get('email') as $message)
-                            <small class="text-danger d-block mt-2">{{ $message }}</small>
-                        @endforeach
-                    @endif
+                    @error('email')
+                        <small class="text-danger d-block mt-2">{{ $message }}</small>
+                    @enderror
                     <!--begin::Row-->
                     <div class="row mt-3">
                         <div class="col-12">
@@ -85,6 +84,8 @@
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
         const Default = {
@@ -106,6 +107,23 @@
         });
     </script>
     <!--end::OverlayScrollbars Configure-->
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // other options: toast-bottom-left, etc.
+            "timeOut": "5000", // how long the toast shows (in ms)
+            "extendedTimeOut": "1000",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "showDuration": "300",
+            "hideDuration": "1000"
+        };
+
+        @if(session('status'))
+            toastr.success("Reset link has been sent", "Success");
+        @endif
+    </script>
     <!--end::Script-->
 </body>
 <!--end::Body-->
