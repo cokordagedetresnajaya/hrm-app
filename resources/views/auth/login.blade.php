@@ -29,6 +29,7 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -65,10 +66,7 @@
                     <!--begin::Row-->
                     <div class="row mt-3">
                         <div class="col-8">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                <label class="form-check-label" for="flexCheckDefault"> Remember Me </label>
-                            </div>
+                            
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
@@ -101,6 +99,8 @@
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
         const Default = {
@@ -122,6 +122,23 @@
         });
     </script>
     <!--end::OverlayScrollbars Configure-->
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // other options: toast-bottom-left, etc.
+            "timeOut": "5000", // how long the toast shows (in ms)
+            "extendedTimeOut": "1000",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "showDuration": "300",
+            "hideDuration": "1000"
+        };
+
+        @if(session('status'))
+            toastr.success("Password changed successfully", "Success");
+        @endif
+    </script>
     <!--end::Script-->
 </body>
 <!--end::Body-->
